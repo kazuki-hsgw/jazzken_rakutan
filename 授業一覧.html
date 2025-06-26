@@ -1,76 +1,24 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>授業一覧 - 筑波大学JAZZ愛好会 楽単＆地雷授業まとめ</title>
-  <link rel="stylesheet" href="style.css">
+  <title>授業一覧</title>
 </head>
 <body>
+  <h1>授業一覧</h1>
+  <ul id="list"></ul>
 
-<header>
-  <div class="container">
-    <h1>筑波大学JAZZ愛好会 楽単＆地雷授業まとめ</h1>
-    <nav>
-      <ul>
-        <li><a href="home.html">トップ</a></li>
-        <li><a href="授業一覧.html">授業一覧</a></li>
-        <li><a href="投稿.html">投稿する</a></li>
-        <li><a href="#" onclick="logout()">ログアウト</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
-
-<main class="container">
-  <section class="intro">
-    <h2>授業一覧</h2>
-    <p>各授業の楽単度、地雷度、学生の口コミを一覧できます。</p>
-  </section>
-</main>
-
-<footer>
-  <div class="container">
-    <p>&copy; 2025 筑波大学JAZZ愛好会 楽単＆地雷授業まとめ</p>
-  </div>
-</footer>
-
-<script>
-  if (localStorage.getItem("loggedIn") !== "true") {
-    window.location.href = "index.html";
-  }
-  function logout() {
-    localStorage.removeItem("loggedIn");
-    window.location.href = "index.html";
-  }
-
-// Google Apps ScriptのAPI URL
-const apiURL = "https://script.google.com/macros/s/AKfycbzJe4QT3fi-x5z82bYp5UDHYhDEWn1z1biSvJOgjaV0WG9zYWtsmHkaHPFjQieeycPajw/exec";
-
-fetch(apiURL)
-  .then(response => response.json())
-  .then(data => {
-    const tbody = document.querySelector("#classTable tbody");
-    tbody.innerHTML = "";
-
-    data.forEach(item => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${item.授業名}</td>
-        <td>${item.教員名}</td>
-        <td>${item.楽単度}</td>
-        <td>${item.地雷度}</td>
-        <td>${item.コメント}</td>
-        <td>${item.投稿日時}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  })
-  .catch(error => {
-    const tbody = document.querySelector("#classTable tbody");
-    tbody.innerHTML = `<tr><td colspan="6">読み込みエラー: ${error}</td></tr>`;
-  });
-</script>
-
+  <script>
+    fetch('https://script.google.com/macros/s/AKfycbx-YpkJ8Lvs9B2R0bhqKHUVNyZzP-dCWPan8eZk0auN/dev')
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById('list');
+        data.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = `${item.classname}（${item.teacher}） 楽単度:${item.easy} 地雷度:${item.bad} - ${item.comment}`;
+          list.appendChild(li);
+        });
+      });
+  </script>
 </body>
-</html>  
+</html>
