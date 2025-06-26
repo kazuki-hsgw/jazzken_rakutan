@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>授業詳細 - 筑波大学JAZZ愛好会 楽単＆地雷授業まとめ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>筑波大学JAZZ愛好会 楽単＆地雷授業まとめ</h1>
+    <nav>
+      <ul>
+        <li><a href="home.html">トップ</a></li>
+        <li><a href="授業.html">授業一覧</a></li>
+        <li><a href="#" onclick="logout()">ログアウト</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section id="class-detail">
+    <h2>授業詳細</h2>
+    <div id="class-info"></div>
+  </section>
+
+  <section>
+    <h3>コメントを投稿する</h3>
+    <form id="comment-form">
+      <textarea id="comment-text" rows="4" cols="50" placeholder="コメントを入力してください" required></textarea><br>
+      <button type="submit">投稿</button>
+    </form>
+  </section>
+
+  <section>
+    <h3>コメント一覧</h3>
+    <ul id="comment-list"></ul>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2025 筑波大学JAZZ愛好会 楽単＆地雷授業まとめ</p>
+  </div>
+</footer>
+
+<script>
+  // ログインチェック
+  if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "index.html";
+  }
+  function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "index.html";
+  }
+
+  // クエリパラメータから授業IDを取得
+  const params = new URLSearchParams(window.location.search);
+  const classId = params.get('id');
+
+  // 授業情報を表示
+  fetch('https://script.google.com/macros/s/AKfycbx3G_WSlXcJGM7vottdm8T3dYHYenLC7st5G27tW8St_A4qFMXa21PEMGQgOt2UhuYVeQ/exec')
+    .then(res => res.json())
+    .then(data => {
+      const classData = data.find(item => item.id === classId);
+      if (classData) {
+        document.getElementById('class-info').innerHTML = `
+          <h3>[${classData.id}] ${classData.classname}</h3>
+          <p>${classData.teacher} 先生</p>
+          <p>
+            <span class="badge badge-easy">楽単度: ${classData.easy}</span>
+            <span class="badge badge-bad">地雷度: ${classData.bad}</span>
+          </p>
+          <p>${classData.comment}</p>
+        `;
+      } else {
+        document.getElementById('class-info').innerHTML = '<p>授業が見つかりません。</p>';
+      }
+    });
+
+  // コメント投稿（ダミー：後で保存先と接続する）
+  document.getElementById('comment-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const text = document.getElementById('comment-text').value;
+    const li = document.createElement('li');
+    li.textContent = text;
+    document.getElementById('comment-list').appendChild(li);
+    document.getElementById('comment-text').value = '';
+  });
+</script>
+
+</body>
+</html>
+
