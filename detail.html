@@ -62,7 +62,7 @@
   const classId = params.get('id');
 
   // 授業情報を表示
-  fetch('https://script.google.com/macros/s/AKfycbx3G_WSlXcJGM7vottdm8T3dYHYenLC7st5G27tW8St_A4qFMXa21PEMGQgOt2UhuYVeQ/exec')
+  fetch('https://script.google.com/macros/s/AKfycbx-YpkJ8Lvs9B2R0bhqKHUVNyZzP-dCWPan8eZk0auN/dev')
     .then(res => res.json())
     .then(data => {
       const classData = data.find(item => item.id === classId);
