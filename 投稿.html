@@ -97,6 +97,41 @@
 
     form.reset();
   });
+
+  document.getElementById('postForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const data = {
+    classname: form.classname.value,
+    teacher: form.teacher.value,
+    easy: form.easy.value,
+    bad: form.bad.value,
+    comment: form.comment.value
+  };
+
+  fetch('https://script.google.com/macros/s/AKfycbxCkGSpGXU6GIG4jzIsh61pytaS1qLrjhTAlD0WFaYDlkXWX5B0dlxdwf1IwlzwFhJZ2Q/exec', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(res => res.json())
+  .then(response => {
+    document.getElementById('result').innerHTML = `
+      <h3>投稿が完了しました！</h3>
+      <p><strong>授業名:</strong> ${data.classname}</p>
+      <p><strong>教員名:</strong> ${data.teacher}</p>
+      <p><strong>楽単度:</strong> ${data.easy}</p>
+      <p><strong>地雷度:</strong> ${data.bad}</p>
+      <p><strong>コメント:</strong> ${data.comment}</p>
+    `;
+    form.reset();
+  })
+  .catch(error => {
+    alert("エラーが発生しました: " + error);
+  });
+});
+
 </script>
 
 </body>
