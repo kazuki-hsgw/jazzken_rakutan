@@ -43,6 +43,37 @@
     localStorage.removeItem("loggedIn");
     window.location.href = "index.html";
   }
+
+// Google Apps ScriptのAPI URL
+const apiURL = "https://script.google.com/macros/s/AKfycbxCkGSpGXU6GIG4jzIsh61pytaS1qLrjhTAlD0WFaYDlkXWX5B0dlxdwf1IwlzwFhJZ2Q/exec";
+
+fetch(apiURL)
+  .then(response => response.json())
+  .then(data => {
+    const tbody = document.querySelector("#classTable tbody");
+    tbody.innerHTML = "";
+
+    data.forEach(item => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${item.授業名}</td>
+        <td>${item.教員名}</td>
+        <td>${item.楽単度}</td>
+        <td>${item.地雷度}</td>
+        <td>${item.コメント}</td>
+        <td>${item.投稿日時}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  })
+  .catch(error => {
+    const tbody = document.querySelector("#classTable tbody");
+    tbody.innerHTML = `<tr><td colspan="6">読み込みエラー: ${error}</td></tr>`;
+  });
+</script>
+
+</body>
+</html>  
 </script>
 
 </body>
