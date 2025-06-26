@@ -12,18 +12,39 @@ h1 {
 ul {
   list-style-type: none;
   padding: 0;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
 li {
   background-color: white;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
 }
 
 li:hover {
   background-color: #f0f8ff;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: white;
+}
+
+.badge-easy {
+  background-color: #27ae60;
+}
+
+.badge-bad {
+  background-color: #c0392b;
+}
+
+.comment {
+  margin-top: 10px;
+  color: #555;
 }
