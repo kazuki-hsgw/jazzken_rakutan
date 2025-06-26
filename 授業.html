@@ -58,14 +58,17 @@
       data.forEach(item => {
         const li = document.createElement('li');
         li.innerHTML = `
-          <div class="classname">[${item.id}] ${item.classname}</div>
-          <div class="teacher">${item.teacher} 先生</div>
-          <div>
-            <span class="badge badge-easy">楽単度: ${item.easy}</span>
-            <span class="badge badge-bad">地雷度: ${item.bad}</span>
-          </div>
-          <div class="comment">${item.comment}</div>
-        `;
+  <div class="classname">
+    <a href="detail.html?id=${item.id}">[${item.id}] ${item.classname}</a>
+  </div>
+  <div class="teacher">${item.teacher} 先生</div>
+  <div>
+    <span class="badge badge-easy">楽単度: ${item.easy}</span>
+    <span class="badge badge-bad">地雷度: ${item.bad}</span>
+  </div>
+  <div class="comment">${item.comment}</div>
+`;
+
         list.appendChild(li);
       });
     })
