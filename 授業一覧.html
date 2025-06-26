@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>授業一覧 - 筑波大学JAZZ愛好会 楽単＆地雷授業まとめ</title>
+  <title>授業一覧 - 筑波大学 楽単＆地雷授業まとめ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -26,7 +26,8 @@
     <h2>授業一覧</h2>
     <p>各授業の楽単度、地雷度、学生の口コミを一覧できます。</p>
   </section>
-   <!-- ▼ 授業一覧 表示部分 -->
+
+  <!-- ▼ 授業一覧 表示部分 -->
   <section class="class-list">
     <ul id="list"></ul>
   </section>
@@ -34,11 +35,13 @@
 
 <footer>
   <div class="container">
-    <p>&copy; 2025 筑波大学 楽単＆地雷授業まとめ</p>
+    <p>&copy; 2025 筑波大学JAZZ愛好会 楽単＆地雷授業まとめ</p>
   </div>
 </footer>
 
+<!-- ▼ スクリプト部分 -->
 <script>
+  // ログインチェック
   if (localStorage.getItem("loggedIn") !== "true") {
     window.location.href = "index.html";
   }
@@ -47,7 +50,7 @@
     window.location.href = "index.html";
   }
 
-// 授業データ取得
+  // 授業データ取得
   fetch('https://script.google.com/macros/s/AKfycbx3G_WSlXcJGM7vottdm8T3dYHYenLC7st5G27tW8St_A4qFMXa21PEMGQgOt2UhuYVeQ/exec')
     .then(response => response.json())
     .then(data => {
@@ -71,7 +74,6 @@
       const list = document.getElementById('list');
       list.innerHTML = '<li>データの読み込みに失敗しました。</li>';
     });
-  
 </script>
 
 </body>
