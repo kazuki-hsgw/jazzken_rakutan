@@ -26,6 +26,10 @@
     <h2>授業一覧</h2>
     <p>各授業の楽単度、地雷度、学生の口コミを一覧できます。</p>
   </section>
+   <!-- ▼ 授業一覧 表示部分 -->
+  <section class="class-list">
+    <ul id="list"></ul>
+  </section>
 </main>
 
 <footer>
@@ -42,6 +46,32 @@
     localStorage.removeItem("loggedIn");
     window.location.href = "index.html";
   }
+
+// 授業データ取得
+  fetch('https://script.google.com/macros/s/AKfycbx3G_WSlXcJGM7vottdm8T3dYHYenLC7st5G27tW8St_A4qFMXa21PEMGQgOt2UhuYVeQ/exec')
+    .then(response => response.json())
+    .then(data => {
+      const list = document.getElementById('list');
+      data.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="classname">[${item.id}] ${item.classname}</div>
+          <div class="teacher">${item.teacher} 先生</div>
+          <div>
+            <span class="badge badge-easy">楽単度: ${item.easy}</span>
+            <span class="badge badge-bad">地雷度: ${item.bad}</span>
+          </div>
+          <div class="comment">${item.comment}</div>
+        `;
+        list.appendChild(li);
+      });
+    })
+    .catch(error => {
+      console.error('データの取得に失敗しました:', error);
+      const list = document.getElementById('list');
+      list.innerHTML = '<li>データの読み込みに失敗しました。</li>';
+    });
+  
 </script>
 
 </body>
