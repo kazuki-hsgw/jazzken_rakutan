@@ -22,14 +22,16 @@
 </header>
 
 <main class="container">
+
   <section id="class-detail">
     <h2>授業詳細</h2>
-    <div id="class-info"></div>
+    <div id="class-info">読み込み中...</div>
   </section>
 
   <section>
     <h3>コメントを投稿する</h3>
     <form id="comment-form">
+      <input type="text" id="name" placeholder="あなたの名前" required><br><br>
       <textarea id="comment-text" rows="4" cols="50" placeholder="コメントを入力してください" required></textarea><br>
       <button type="submit">投稿</button>
     </form>
@@ -39,6 +41,7 @@
     <h3>コメント一覧</h3>
     <ul id="comment-list"></ul>
   </section>
+
 </main>
 
 <footer>
@@ -61,8 +64,12 @@
   const params = new URLSearchParams(window.location.search);
   const classId = params.get('id');
 
+  // GASのURL（自分のに置き換える）
+  const CLASS_DATA_URL = 'https://script.google.com/macros/s/AKfycbx-YpkJ8Lvs9B2R0bhqKHUVNyZzP-dCWPan8eZk0auN/dev';
+  const COMMENT_URL = 'https://script.google.com/macros/s/AKfycbxYXhoSW4bSeXvUAZjBOqbIcbwDahlr6sRyQDKswn5BT2VX8hTcWN-or8IpMBhDR2JJ/exec';
+
   // 授業情報を表示
-  fetch('https://script.google.com/macros/s/AKfycbx-YpkJ8Lvs9B2R0bhqKHUVNyZzP-dCWPan8eZk0auN/dev')
+  fetch(CLASS_DATA_URL)
     .then(res => res.json())
     .then(data => {
       const classData = data.find(item => item.id === classId);
@@ -81,17 +88,50 @@
       }
     });
 
-  // コメント投稿（ダミー：後で保存先と接続する）
+  // コメント一覧を読み込む
+  fetch(COMMENT_URL + '?id=' + classId)
+    .then(res => res.json())
+    .then(comments => {
+      const list = document.getElementById('comment-list');
+      if (comments.length === 0) {
+        list.innerHTML = '<li>まだコメントがありません。</li>';
+      } else {
+        comments.forEach(item => {
+          const li = document.createElement('li');
+          li.innerHTML = `<strong>${item.name}</strong> (${item.date}): ${item.comment}`;
+          list.appendChild(li);
+        });
+      }
+    });
+
+  // コメント投稿
   document.getElementById('comment-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const text = document.getElementById('comment-text').value;
-    const li = document.createElement('li');
-    li.textContent = text;
-    document.getElementById('comment-list').appendChild(li);
-    document.getElementById('comment-text').value = '';
+    const name = document.getElementById('name').value;
+
+    if (!name.trim() || !text.trim()) {
+      alert('名前とコメントは必須です。');
+      return;
+    }
+
+    fetch(COMMENT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        id: classId,
+        name: name,
+        comment: text
+      })
+    })
+    .then(response => response.json())
+    .then(result => {
+      alert('コメント投稿完了！');
+      location.reload();  // 投稿後にページ更新
+    })
+    .catch(error => console.error('投稿エラー:', error));
   });
 </script>
 
 </body>
 </html>
-
