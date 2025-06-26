@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>口コミ投稿ページ - 筑波大学JAZZ愛好会 楽単＆地雷授業まとめ</title>
+  <title>投稿 - 筑波大学JAZZ愛好会 楽単＆地雷授業まとめ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,7 +25,35 @@
 <main class="container">
   <section class="intro">
     <h2>口コミ投稿ページ</h2>
-    <p>あなたの経験を共有してください。</p>
+    <p>あなたの授業の体験を投稿してください。</p>
+  </section>
+
+  <section class="form-section">
+    <form id="postForm">
+      <label>授業名:<br>
+        <input type="text" name="classname" required>
+      </label><br><br>
+
+      <label>教員名:<br>
+        <input type="text" name="teacher" required>
+      </label><br><br>
+
+      <label>楽単度（1〜5）:<br>
+        <input type="number" name="easy" min="1" max="5" required>
+      </label><br><br>
+
+      <label>地雷度（1〜5）:<br>
+        <input type="number" name="bad" min="1" max="5" required>
+      </label><br><br>
+
+      <label>コメント:<br>
+        <textarea name="comment" rows="5" cols="50" required></textarea>
+      </label><br><br>
+
+      <button type="submit">送信</button>
+    </form>
+
+    <div id="result" style="margin-top:20px; color:green;"></div>
   </section>
 </main>
 
@@ -39,10 +67,36 @@
   if (localStorage.getItem("loggedIn") !== "true") {
     window.location.href = "index.html";
   }
+
   function logout() {
     localStorage.removeItem("loggedIn");
     window.location.href = "index.html";
   }
+
+  // 簡易的な送信処理（今は保存せず、確認用に表示）
+  document.getElementById('postForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const data = {
+      授業名: form.classname.value,
+      教員名: form.teacher.value,
+      楽単度: form.easy.value,
+      地雷度: form.bad.value,
+      コメント: form.comment.value
+    };
+
+    document.getElementById('result').innerHTML = `
+      <h3>投稿が完了しました！</h3>
+      <p><strong>授業名:</strong> ${data.授業名}</p>
+      <p><strong>教員名:</strong> ${data.教員名}</p>
+      <p><strong>楽単度:</strong> ${data.楽単度}</p>
+      <p><strong>地雷度:</strong> ${data.地雷度}</p>
+      <p><strong>コメント:</strong> ${data.コメント}</p>
+    `;
+
+    form.reset();
+  });
 </script>
 
 </body>
