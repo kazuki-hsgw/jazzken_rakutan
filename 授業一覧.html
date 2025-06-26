@@ -1,23 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>授業一覧</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>授業一覧 - 筑波大学 楽単＆地雷授業まとめ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>筑波大学 楽単＆地雷授業まとめ</h1>
 
-  <!-- ▼ 戻るボタン -->
-  <div class="back-button">
-    <a href="home.html">← トップに戻る</a>
+<header>
+  <div class="container">
+    <h1>筑波大学 楽単＆地雷授業まとめ</h1>
+    <nav>
+      <ul>
+        <li><a href="home.html">トップ</a></li>
+        <li><a href="授業一覧.html">授業一覧</a></li>
+        <li><a href="投稿.html">投稿する</a></li>
+        <li><a href="#" onclick="logout()">ログアウト</a></li>
+      </ul>
+    </nav>
   </div>
+</header>
 
-  <ul id="list"></ul>
+<main class="container">
+  <section class="intro">
+    <h2>授業一覧</h2>
+    <p>各授業の楽単度、地雷度、学生の口コミを一覧できます。</p>
+  </section>
+</main>
 
+<footer>
+  <div class="container">
+    <p>&copy; 2025 筑波大学 楽単＆地雷授業まとめ</p>
+  </div>
+</footer>
 
-  <script>
-    fetch('https://script.google.com/macros/s/AKfycbx3G_WSlXcJGM7vottdm8T3dYHYenLC7st5G27tW8St_A4qFMXa21PEMGQgOt2UhuYVeQ/exec')
+<script>
+  if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "index.html";
+  }
+  function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "index.html";
+  }
+  fetch('https://script.google.com/macros/s/AKfycbx3G_WSlXcJGM7vottdm8T3dYHYenLC7st5G27tW8St_A4qFMXa21PEMGQgOt2UhuYVeQ/exec')
       .then(res => res.json())
       .then(data => {
         const list = document.getElementById('list');
@@ -27,6 +53,7 @@
           list.appendChild(li);
         });
       });
-  </script>
+</script>
+
 </body>
 </html>
